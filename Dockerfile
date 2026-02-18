@@ -22,6 +22,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 WORKDIR /app
 
+RUN apt-get update && apt-get install -y --no-install-recommends tini \
+ && rm -rf /var/lib/apt/lists/*
+
 RUN groupadd -g 10001 appuser \
     && useradd -u 10001 -g 10001 -m -s /usr/sbin/nologin appuser
 
@@ -34,4 +37,5 @@ COPY --from=builder --chown=10001:10001 /app /app
 
 USER 10001:10001
 
+ENTRYPOINT ["tini", "--"]
 CMD [ "python", "./app.py" ]
