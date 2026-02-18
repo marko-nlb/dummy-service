@@ -17,16 +17,21 @@ FROM python:3.14.3-slim-trixie@sha256:486b8092bfb12997e10d4920897213a06563449c95
 
 EXPOSE 8080/tcp
 
-WORKDIR /app
-
-COPY --from=builder /opt/venv /opt/venv
-ENV PATH="/opt/venv/bin:$PATH"
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
-COPY --from=builder /app /app
+WORKDIR /app
 
-RUN useradd -m appuser && chown -R appuser:appuser /app
-USER appuser
+RUN groupadd -g 10001 appuser \
+    && useradd -u 10001 -g 10001 -m -s /usr/sbin/nologin appuser
+
+#RUN useradd -m appuser && chown -R appuser:appuser /app
+
+COPY --from=builder /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+
+COPY --from=builder --chown=10001:10001 /app /app
+
+USER 10001:10001
 
 CMD [ "python", "./app.py" ]
