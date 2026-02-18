@@ -37,7 +37,7 @@ COPY --from=builder --chown=10001:10001 /app /app
 
 USER 10001:10001
 
-HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+HEALTHCHECK --interval=10s --timeout=3s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health').read()" || exit 1
 
 ENTRYPOINT ["tini", "--"]
