@@ -88,4 +88,4 @@ jobs:
             - name: Start
               env: 
                 IMAGE_VERSION: ${{ needs.build-and-push-image.outputs.image_version }} 
-              run: docker compose -f docker-compose.yaml -f docker-compose.gha.yamlup -d
+              run: docker compose -f docker-compose.yaml -f docker-compose.gha.yaml up -d
