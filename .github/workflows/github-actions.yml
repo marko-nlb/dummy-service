@@ -35,7 +35,7 @@ jobs:
                     type=sha
                     type=raw,value=${{ github.ref_name }}-${{ github.run_number }}-${{ github.run_attempt }}
             
-            - name: Login to GHCR
+            - name: Login to registry
               uses: docker/login-action@v3
               with:
                 registry: ${{ env.REGISTRY }}
@@ -55,8 +55,8 @@ jobs:
             - name: Extract sha version
               id: version
               run: |
-                SHA=$(echo "${{ steps.meta.outputs.tags }}" | grep ':sha-' | head -n1 | cut -d: -f2)
-                echo "image_version=$SHA_REF" >> "$GITHUB_OUTPUT" 
+                SHA_VER=$(echo "${{ steps.meta.outputs.tags }}" | grep ':sha-' | head -n1 | cut -d: -f2)
+                echo "image_version=$SHA_VER" >> "$GITHUB_OUTPUT" 
     
     start-container:
         name: Start container 
