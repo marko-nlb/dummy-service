@@ -73,7 +73,13 @@ jobs:
 
             #- name: Pull image
             #  run: docker pull ${{ env.REGISTRY}}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME}}:${{ needs.build-and-push-image.outputs.image_version }}
-            
+            - name: Login to registry
+              uses: docker/login-action@v3
+              with:
+                registry: ${{ env.REGISTRY }}
+                username: ${{ github.actor }}
+                password: ${{ secrets.GITHUB_TOKEN }}
+                
             - name: Start
               run: IMAGE_VERSION=${{ needs.build-and-push-image.outputs.image_version }} docker compose up -d
 
