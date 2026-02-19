@@ -52,11 +52,11 @@ jobs:
                 tags: ${{ steps.meta.outputs.tags }}
                 labels: ${{ steps.meta.outputs.labels }}
             
-            - name: Extract version
+            - name: Extract sha version
               id: version
               run: |
-                SHA=$(echo "${{ steps.meta.outputs.tags }}" | grep ':sha-' | head -n1)
-                echo "image_version=$SHA_REF" >> "$GITHUB_OUTPUT"
+                SHA=$(echo "${{ steps.meta.outputs.tags }}" | grep ':sha-' | head -n1 | cut -d: -f2)
+                echo "image_version=$SHA_REF" >> "$GITHUB_OUTPUT" 
     
     start-container:
         name: Start container 
