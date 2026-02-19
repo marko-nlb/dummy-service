@@ -20,24 +20,6 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v6
-            
-            - name: Login to GHCR
-              uses: docker/login-action@v3
-              with:
-                registry: ${{ env.REGISTRY }}
-                username: ${{ github.actor }}
-                password: ${{ secrets.GITHUB_TOKEN }}
-            
-            #- name: Extract metadata
-            #  id: meta
-            #  uses: docker/metadata-action@v5
-            #  with:
-            #    images: ${{ env.REGISTRY }}/${{ github.repository }}
-            #    tags: |
-            #        type=ref,event=branch
-            #        type=ref,event=tag
-            #        type=semver,pattern={{version}}
-            #        type=sha
             - name: Compute version
               id: version
               shell: bash
@@ -46,6 +28,13 @@ jobs:
                 VERSION="0.1.${COUNT}"
                 echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
+            - name: Login to GHCR
+              uses: docker/login-action@v3
+              with:
+                registry: ${{ env.REGISTRY }}
+                username: ${{ github.actor }}
+                password: ${{ secrets.GITHUB_TOKEN }}
+
             - name: Build and push
               uses: docker/build-push-action@v6
               with:
@@ -53,6 +42,4 @@ jobs:
                 push: true
                 file: ./Dockerfile
                 tags: ${{ steps.version.outputs.version }}
-                #tags: ${{ steps.meta.outputs.tags }}
-                #labels: ${{ steps.meta.outputs.labels }}
 
