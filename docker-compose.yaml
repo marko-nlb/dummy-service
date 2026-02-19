@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   dummy-service:
-    image: "dummy-service:${DUMMY_SERVICE_VERSION:-1.0}"
+    image: "dummy-service:${IMAGE_VERSION}"
     container_name: "dummy-service"
     restart: always
     healthcheck:
