@@ -55,7 +55,7 @@ jobs:
             - name: Extract version
               id: version
               run: |
-                SHA=$(echo "${{ steps.meta.outputs.tag }}" | grep ':sha-' | head -n1)
+                SHA=$(echo "${{ steps.meta.outputs.tags }}" | grep ':sha-' | head -n1)
                 echo "image_version=$SHA_REF" >> "$GITHUB_OUTPUT"
     
     start-container:
