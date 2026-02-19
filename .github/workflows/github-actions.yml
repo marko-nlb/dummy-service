@@ -56,6 +56,11 @@ jobs:
               id: version
               run: |
                 SHA_VER=$(echo "${{ steps.meta.outputs.tags }}" | grep ':sha-' | head -n1 | cut -d: -f2)
+                if [ -z "$SHA_VER" ]; then
+                    echo "ERROR: No sha tag found in metadata output"
+                    echo "${{ steps.meta.outputs.tags }}"
+                    exit 1
+                fi
                 echo "image_version=$SHA_VER" >> "$GITHUB_OUTPUT" 
     
     start-container:
@@ -66,9 +71,9 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v6
 
-            - name: Pull image
-              run: docker compose pull ${{ env.REGISTRY}}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME}}:${{ needs.build-and-push-image.outputs.image_version }}
+            #- name: Pull image
+            #  run: docker pull ${{ env.REGISTRY}}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME}}:${{ needs.build-and-push-image.outputs.image_version }}
             
             - name: Start
-              run: export IMAGE_VERSION=${{ needs.build-and-push-image.outputs.image_version }} docker compose up -d
+              run: IMAGE_VERSION=${{ needs.build-and-push-image.outputs.image_version }} docker compose up -d
 
