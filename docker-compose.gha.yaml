@@ -1,0 +1,3 @@
+services:
+  dummy-service:
+    image: ghcr.io/kastelicma/dummy-service:${IMAGE_VERSION}
