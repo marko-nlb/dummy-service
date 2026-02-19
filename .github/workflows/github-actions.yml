@@ -95,10 +95,10 @@ jobs:
                 for i in {1..60}; do
                     STATUS=$(docker inspect --format='{{json .State.Health.Status}}' ${{ env.IMAGE_NAME }} 2>/dev/null)
                     echo "Health: $STATUS"
-                    if [ "$STATUS" = "healthy"]; then
+                    if [ "$STATUS" = "healthy" ]; then
                         exit 0
                     fi
-                    if [ "$STATUS" = "unhealthy"]; then
+                    if [ "$STATUS" = "unhealthy" ]; then
                         docker compose logs
                         exit 1
                     fi
@@ -112,7 +112,7 @@ jobs:
             - name: Health check
               run: |
                 res=$(curl -fsS http://localhost:8000/health | jq -r '.health')
-                if ["$res" != "OK"]; then
+                if [ "$res" != "OK" ]; then
                     echo "Health check failed!"
                     exit 1
                 fi
