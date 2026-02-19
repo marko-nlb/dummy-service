@@ -1,5 +1,5 @@
 name: Github Actions for dummy-service
-run-name: ${{ github.actor }}
+run-name: Build and deploy by ${{ github.actor }}
 on:
     push: 
         branches:
