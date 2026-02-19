@@ -45,5 +45,5 @@ jobs:
                 context: .
                 push: true
                 file: ./Dockerfile
-                tags: ${{ env.REGISTRY}}/${{ env.REPOSITORY }}:${{ steps.version.outputs.version }}
+                tags: ${{ env.REGISTRY}}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME}}:${{ steps.version.outputs.version }}
 
