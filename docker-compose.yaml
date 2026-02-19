@@ -1,4 +1,4 @@
-version: '3'
+version: "3.9"
 services:
   dummy-service:
     image: "dummy-service:${DUMMY_SERVICE_VERSION:-1.0}"
@@ -11,4 +11,11 @@ services:
       timeout: 3s
     ports: 
       - "8080:8080"
-    
+    deploy:
+      resources:
+        limits:
+          cpus: 2
+          memory: 256M
+        reservations:
+          cpus: 1
+          memory: 128M
