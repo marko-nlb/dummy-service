@@ -5,11 +5,12 @@ services:
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health').read()\" || exit 1"]
-      interval: 5s
+      interval: 10s
       retries: 3
       timeout: 3s
+      start_period: 10s
     ports: 
-      - "8080:8080"
+      - "8000:8080"
     deploy:
       resources:
         limits:

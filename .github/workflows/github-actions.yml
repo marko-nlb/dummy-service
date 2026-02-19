@@ -89,3 +89,32 @@ jobs:
               env: 
                 IMAGE_VERSION: ${{ needs.build-and-push-image.outputs.image_version }} 
               run: docker compose -f docker-compose.yaml -f docker-compose.gha.yaml up -d
+            
+            - name: Wait for ready
+              run: |
+                for i in {1..60}; do
+                    STATUS=$(docker compose inspect --format='{{json .State.Health.Status}}' ${{ env.IMAGE_NAME }}) 2>/dev/null)
+                    echo "Health: $STATUS"
+                    if [ "$STATUS" = "healthy"]; then
+                        exit 0
+                    fi
+                    if [ "$STATUS" = "unhealthy"]; then
+                        docker compose logs
+                        exit 1
+                    fi
+                    sleep 2
+                done
+
+                echo "Waiting too long for healthy"
+                docker compose logs
+                exit 1
+            
+            - name: Health check
+              run: |
+                res=$(curl -s http://localhost:8000/health | jq '.health')
+                if ["$res" != "OK"]; then
+                    echo "Health check failed!"
+                    exit 1
+                fi
+                echo "Health check $res"
+
