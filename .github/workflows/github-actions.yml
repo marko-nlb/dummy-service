@@ -80,10 +80,10 @@ jobs:
                 username: ${{ github.actor }}
                 password: ${{ secrets.GITHUB_TOKEN }}
             
-            - name: Pull image
-              env: 
-                IMAGE_VERSION: ${{ needs.build-and-push-image.outputs.image_version }} 
-              run: docker compose -f docker-compose.yaml -f docker-compose.gha.yaml pull
+            #- name: Pull image
+            #  env: 
+            #    IMAGE_VERSION: ${{ needs.build-and-push-image.outputs.image_version }} 
+            #  run: docker compose -f docker-compose.yaml -f docker-compose.gha.yaml pull
 
             - name: Start
               env: 
