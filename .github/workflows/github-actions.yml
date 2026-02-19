@@ -79,7 +79,13 @@ jobs:
                 registry: ${{ env.REGISTRY }}
                 username: ${{ github.actor }}
                 password: ${{ secrets.GITHUB_TOKEN }}
-                
-            - name: Start
-              run: IMAGE_VERSION=${{ needs.build-and-push-image.outputs.image_version }} docker compose up -d
+            
+            - name: Pull image
+              env: 
+                IMAGE_VERSION: ${{ needs.build-and-push-image.outputs.image_version }} 
+              run: docker compose pull
 
+            - name: Start
+              env: 
+                IMAGE_VERSION: ${{ needs.build-and-push-image.outputs.image_version }} 
+              run: docker compose up -d
