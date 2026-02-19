@@ -1,20 +1,50 @@
 name: Github Actions for dummy-service
-run-name: Build and deploy by ${{ github.actor }}
+run-name: Build and deploy dummy-service
 on:
     push: 
         branches:
             - main
+    pull_request:
+        branches:
+            - main
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: dummy-service
 
 jobs:
-    Build-dummy-service:
+    build-and-push-image:
         runs-on: ubuntu-latest
+        permissions:
+            packages: write
+            contents: read
         steps:
-            - run: echo "The job was triggered by ${{ github.event_name }}"
-            - run: echo "This job is running on ${{ runner.os }}"
-            - name: Check out repository code
-              uses: actions/checkout@v5
-            - run: echo "The ${{ github.repository }} has been cloned to the runner."
-            - name: List files in the repository
-              run: |
-                ls ${{ github.workspace }}
+            - name: Checkout
+              uses: actions/checkout@v6
+            
+            - name: Login to GHCR
+              uses: docker/login-action@v3
+              with:
+                registry: ${{ env.REGISTRY }}
+                username: ${{ github.actor }}
+                password: ${{ secrets.GITHUB_TOKEN }}
+            
+            - name: Extract metadata
+              id: meta
+              uses: docker/metadata-action@v5
+              with:
+                images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+                tags: |
+                    type=ref,event=branch
+                    type=ref,event=tag
+                    type=sha
+
+            - name: Build and push
+              uses: docker/build-push-action@v6
+              with:
+                context: .
+                push: true
+                file: ./Dockerfile
+                tags: ${{ steps.meta.outputs.tags }}
+                labels: ${{ steps.meta.outputs.labels }}
 
