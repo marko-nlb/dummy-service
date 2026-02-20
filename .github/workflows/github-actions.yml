@@ -99,7 +99,7 @@ jobs:
                     if [ "$STATUS" = "running" ]; then
                         break
                     fi
-                    if [ "$STATUS" = "exited" ] || [ "$STATUS = "dead" ]; then
+                    if [ "$STATUS" = "exited" ] || [ "$STATUS" = "dead" ]; then
                         echo "Container crashed"
                         docker compose logs
                         exit 1
@@ -110,9 +110,9 @@ jobs:
             - name: Health check
               run: |
                 for i in {1..60}; do
-                    res=$(curl -fsS http://localhost:8000/health >/dev/null | jq -r '.health')
-                    if [ "$res" = "OK" ]; then
-                        echo "Service ready: $res"
+                    RES=$(curl -fsS http://localhost:8000/health >/dev/null | jq -r '.health')
+                    if [ "$RES" = "OK" ]; then
+                        echo "Service ready: $RES"
                         exit 0
                     fi
                     sleep 2
