@@ -11,6 +11,7 @@ env:
   REGISTRY: ghcr.io
   REPOSITORY: kastelicma
   IMAGE_NAME: dummy-service
+  SERVICE: dummy-service
 
 jobs:
     build-and-push-image:
@@ -90,31 +91,33 @@ jobs:
                 IMAGE_VERSION: ${{ needs.build-and-push-image.outputs.image_version }} 
               run: docker compose -f docker-compose.yaml -f docker-compose.gha.yaml up -d
             
-            - name: Wait for ready
+            - name: Wait for running
               run: |
                 for i in {1..60}; do
-                    STATUS=$(docker inspect --format='{{json .State.Health.Status}}' ${{ env.IMAGE_NAME }} 2>/dev/null)
-                    echo "Health: $STATUS"
-                    if [ "$STATUS" = "healthy" ]; then
-                        exit 0
+                    STATUS=$(docker inspect --format='{{.State.Status}}' ${{ env.SERVICE }} 2>/dev/null)
+                    echo "Container is $STATUS"
+                    if [ "$STATUS" = "running" ]; then
+                        break
                     fi
-                    if [ "$STATUS" = "unhealthy" ]; then
+                    if [ "$STATUS" = "exited" ] || [ "$STATUS = "dead" ]; then
+                        echo "Container crashed"
                         docker compose logs
                         exit 1
                     fi
                     sleep 2
                 done
-
-                echo "Waiting too long for healthy"
-                docker compose logs
-                exit 1
             
             - name: Health check
               run: |
-                res=$(curl -fsS http://localhost:8000/health | jq -r '.health')
-                if [ "$res" != "OK" ]; then
-                    echo "Health check failed!"
-                    exit 1
-                fi
-                echo "Health check $res"
+                for i in {1..60}; do
+                    res=$(curl -fsS http://localhost:8000/health >/dev/null | jq -r '.health')
+                    if [ "$res" = "OK" ]; then
+                        echo "Service ready: $res"
+                        exit 0
+                    fi
+                    sleep 2
+                done
+                echo "Service not ready!"
+                docker compose logs
+                exit 1
 
