@@ -2,8 +2,9 @@ name: Github Actions for dummy-service
 run-name: Build and deploy dummy-service
 on:
     push: 
-        branches:
-            - main
+        branches: [ main ]
+        paths-ignore:
+            - ".github/workflows/*"
         tags:
             - 'v*'
 
