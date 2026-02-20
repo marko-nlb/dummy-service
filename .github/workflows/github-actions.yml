@@ -92,6 +92,8 @@ jobs:
               run: docker compose -f docker-compose.yaml -f docker-compose.gha.yaml up -d
             
             - name: Wait for running
+              env: 
+                IMAGE_VERSION: ${{ needs.build-and-push-image.outputs.image_version }} 
               run: |
                 for i in {1..60}; do
                     STATUS=$(docker inspect --format='{{.State.Status}}' ${{ env.SERVICE }} 2>/dev/null)
@@ -101,16 +103,18 @@ jobs:
                     fi
                     if [ "$STATUS" = "exited" ] || [ "$STATUS" = "dead" ]; then
                         echo "Container crashed"
-                        docker compose logs
+                        docker compose -f docker-compose.yaml -f docker-compose.gha.yaml logs
                         exit 1
                     fi
                     sleep 2
                 done
             
             - name: Health check
+              env: 
+                IMAGE_VERSION: ${{ needs.build-and-push-image.outputs.image_version }} 
               run: |
                 for i in {1..60}; do
-                    RES=$(curl -fsS http://localhost:8000/health >/dev/null | jq -r '.health')
+                    RES=$(curl -fsS http://localhost:8000/health | jq -r '.health')
                     if [ "$RES" = "OK" ]; then
                         echo "Service ready: $RES"
                         exit 0
@@ -118,6 +122,6 @@ jobs:
                     sleep 2
                 done
                 echo "Service not ready!"
-                docker compose logs
+                docker compose -f docker-compose.yaml -f docker-compose.gha.yaml logs
                 exit 1
 
