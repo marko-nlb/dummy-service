@@ -1,1 +1,2 @@
 1) Izvajanje unit testov pred izgradnjjo slike
+2) Trunk veja (main) zaščitena, zahtevan PR z vsaj 1 potrditvijo
