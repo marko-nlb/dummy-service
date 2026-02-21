@@ -24,8 +24,10 @@ jobs:
         outputs:
             image_version: ${{ steps.version.outputs.image_version }}
         permissions:
+            id-token: write
             packages: write
             contents: read
+            attestations: write
         steps:
             - name: Checkout
               uses: actions/checkout@v6
