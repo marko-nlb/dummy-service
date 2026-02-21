@@ -1,4 +1,4 @@
 1) Izvajanje unit testov pred izgradnjjo slike
 2) Trunk veja (main) zaščitena, zahtevan PR z vsaj 1 potrditvijo
-3) Uporaba CODEOWNERS + zaščita veje => potreben pregled lastnika
-4) 
+3) Uporaba CODEOWNERS + zaščita veje
+4) Uporaba dependabot analize varnostne ranljivosti
