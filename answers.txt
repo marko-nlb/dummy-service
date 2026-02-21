@@ -1,4 +1,5 @@
-1) Izvajanje unit testov pred izgradnjjo slike
-2) Trunk veja (main) zaščitena, zahtevan PR z vsaj 1 potrditvijo
-3) Uporaba CODEOWNERS + zaščita veje
-4) Uporaba dependabot analize varnostne ranljivosti
+1) Izvajanje unit testov pred izgradnjo slike.
+2) Trunk veja (main) zaščitena, zahtevan PR z vsaj 1 potrditvijo, CODEOWNERS.
+3) Uporaba preverjanja gesel pri commit-u (Secret Protection).
+4) SAST analiza kode (CodeQL) + Dependabot analiza odvisnosti ranljivosti + odločanje glede na kritičnost
+5) Nameščanje v višja okolja z uporabo Environments za večjo sledljivost. 
