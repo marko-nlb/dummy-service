@@ -10,9 +10,12 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  REPOSITORY: kastelicma
+  REPOSITORY: marko-nlb
   IMAGE_NAME: dummy-service
   SERVICE: dummy-service
+
+permissions:
+  contents: read
 
 jobs:
     build-and-push-image:
