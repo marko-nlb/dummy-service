@@ -1,9 +1,15 @@
+
+Obseg in zahtevnost dodatnih korakov je odvisna od več faktorjev, npr. zrelosti organizacije, regulatornih zahtev, kritičnosti servisa, velikosti ekipe, 
+znanja ekipe, izvajalnega okolja, topologije sistema, stopnja avtomatizacije, obravnave incidentov, monitoringa itd. Spodnji predlogi so smiselni kadar 
+servis deluje v reguliranem ali poslovno kritičnem okolju, obdeluje občutljive podatke in na njem sodeluje več razvijalcev. 
+V manj kritičnih ali prototipnih okoljih bi bila takšna stopnja kontrole lahko prekomerna glede na tveganje.
+
 1) Izvajanje linting + unit testov za vsak PR pred izgradnjo slike. Izvajanje integration testov odvisno od hitrosti testov in kritičnosti/lokacija 
 spremembe, sicer ponoči.
 2) Preprečiti sočasno izvajanje pipeline-ov.
 3) Trunk veja (main) zaščitena, zahtevan PR z vsaj 1 potrditvijo, CODEOWNERS za specialiste.
 4) Uporaba preverjanja gesel pri push-u (Secret Protection).
-5) SAST analiza kode (CodeQL) + Dependabot analiza ranljivosti odvisnosti + odločanje/potrjevanje glede na kritičnost, pred izgradnjo.
+5) SAST analiza kode (CodeQL) + Dependabot analiza ranljivosti odvisnosti + odločanje/potrjevanje glede na kritičnost, pred izgradnjo slike.
 6) Varnostno preverjanje izgrajene slike (Trivy) - po izgradnji in pred nameščanjem.
 7) Veriga skrbništva, podpisovanje cosign za integriteto (podpis po izgrandnji slike, verifikacija pred nameščanjem) +
 dokaz o izvoru (SLSA - repozitorij, commit, workflow, pripet na sliko) po izgradnji
