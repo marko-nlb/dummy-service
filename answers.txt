@@ -1,15 +1,15 @@
 1) Izvajanje linting + unit testov za vsak PR pred izgradnjo slike. Izvajanje integration testov odvisno od hitrosti testov in kritičnosti/lokacija 
 spremembe, sicer ponoči.
-2) Release notes.
-3) Preprečiti sočasno izvajanje pipeline-ov.
-4) Trunk veja (main) zaščitena, zahtevan PR z vsaj 1 potrditvijo, CODEOWNERS.
-5) Uporaba preverjanja gesel pri commit-u (Secret Protection).
-6) SAST analiza kode (CodeQL) + Dependabot analiza ranljivosti odvisnosti + odločanje/potrjevanje glede na kritičnost
-
-7) Varnostno preverjanje izgrajene slike (Trivy)
-8) Veriga skrbništva, podpisovanje cosign (podpis po izgrandnji slike, verifikacija pred nameščanjem) + dokaz o izvoru (SLSA - repozitorij, commit, workflow, pripet na sliko)
-9) Nameščanje v višja okolja z uporabo Environments in potrjevalcev za večjo sledljivost. Uporaba vedno istega digesta slike za nameščanje v višja okolja. 
+2) Preprečiti sočasno izvajanje pipeline-ov.
+3) Trunk veja (main) zaščitena, zahtevan PR z vsaj 1 potrditvijo, CODEOWNERS za specialiste.
+4) Uporaba preverjanja gesel pri push-u (Secret Protection).
+5) SAST analiza kode (CodeQL) + Dependabot analiza ranljivosti odvisnosti + odločanje/potrjevanje glede na kritičnost, pred izgradnjo.
+6) Varnostno preverjanje izgrajene slike (Trivy) - po izgradnji in pred nameščanjem.
+7) Veriga skrbništva, podpisovanje cosign za integriteto (podpis po izgrandnji slike, verifikacija pred nameščanjem) +
+dokaz o izvoru (SLSA - repozitorij, commit, workflow, pripet na sliko) po izgradnji
+8) Nameščanje v višja okolja z uporabo Environments in potrjevalcev za večjo sledljivost. Uporaba vedno istega digesta slike za nameščanje v višja okolja. 
 Nameščanje možno samo preko pipeline.
-10) Možnost za povrnitev v prejšnje stanje/digest (rollback job) v primeru napake pri nameščanju.
-11) Shranjevanje artefaktov (poročila testiranja, pokritost, logov) za kasnejšo analizo
-12) SBOM (Syft), pripet k sliki
+9) Možnost za povrnitev v prejšnje uspešno stanje/digest (rollback job) v primeru napake pri nameščanju.
+10) Shranjevanje artefaktov (poročila testiranja, pokritost, logi ob napakah) za kasnejšo analizo
+11) SBOM (Syft), pripet k sliki, po izgradnji slike.
+12) Release notes po izgradnji in preverjanju slike
