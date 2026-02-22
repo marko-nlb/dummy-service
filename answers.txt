@@ -1,5 +1,15 @@
-1) Izvajanje unit testov pred izgradnjo slike.
-2) Trunk veja (main) zaščitena, zahtevan PR z vsaj 1 potrditvijo, CODEOWNERS.
-3) Uporaba preverjanja gesel pri commit-u (Secret Protection).
-4) SAST analiza kode (CodeQL) + Dependabot analiza odvisnosti ranljivosti + odločanje glede na kritičnost
-5) Nameščanje v višja okolja z uporabo Environments za večjo sledljivost. 
+1) Izvajanje linting + unit testov za vsak PR pred izgradnjo slike. Izvajanje integration testov odvisno od hitrosti testov in kritičnosti/lokacija 
+spremembe, sicer ponoči.
+2) Release notes.
+3) Preprečiti sočasno izvajanje pipeline-ov.
+4) Trunk veja (main) zaščitena, zahtevan PR z vsaj 1 potrditvijo, CODEOWNERS.
+5) Uporaba preverjanja gesel pri commit-u (Secret Protection).
+6) SAST analiza kode (CodeQL) + Dependabot analiza ranljivosti odvisnosti + odločanje/potrjevanje glede na kritičnost
+
+7) Varnostno preverjanje izgrajene slike (Trivy)
+8) Veriga skrbništva, podpisovanje cosign (podpis po izgrandnji slike, verifikacija pred nameščanjem) + dokaz o izvoru (SLSA - repozitorij, commit, workflow, pripet na sliko)
+9) Nameščanje v višja okolja z uporabo Environments in potrjevalcev za večjo sledljivost. Uporaba vedno istega digesta slike za nameščanje v višja okolja. 
+Nameščanje možno samo preko pipeline.
+10) Možnost za povrnitev v prejšnje stanje/digest (rollback job) v primeru napake pri nameščanju.
+11) Shranjevanje artefaktov (poročila testiranja, pokritost, logov) za kasnejšo analizo
+12) SBOM (Syft), pripet k sliki
